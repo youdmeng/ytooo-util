@@ -1,6 +1,6 @@
 package com.ytooo.time;
 
-import com.ebiz.erp.common.exception.ServiceException;
+import com.ytooo.exception.ServiceException;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;

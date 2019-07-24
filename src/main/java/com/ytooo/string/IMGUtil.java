@@ -1,6 +1,6 @@
 package com.ytooo.string;
 
-import com.ebiz.erp.common.exception.ServiceException;
+import com.ytooo.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
