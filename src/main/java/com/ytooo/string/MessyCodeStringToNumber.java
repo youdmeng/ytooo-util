@@ -1,6 +1,6 @@
 package com.ytooo.string;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 数字字符串格式化为数字
