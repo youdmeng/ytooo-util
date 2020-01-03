@@ -39,4 +39,46 @@ public class Response<T> {
     public Response(String msg) {
         this.msg = msg;
     }
+
+    /**
+     * 属性get
+     */
+    public int getCode() {
+        return code;
+    }
+
+    /**
+     * 属性set
+     */
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    /**
+     * 属性get
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * 属性set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * 属性get
+     */
+    public T getData() {
+        return data;
+    }
+
+    /**
+     * 属性set
+     */
+    public void setData(T data) {
+        this.data = data;
+    }
 }
