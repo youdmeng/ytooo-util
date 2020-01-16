@@ -6,16 +6,22 @@
 
     <groupId>ml.ytooo</groupId>
     <artifactId>ytooo-util</artifactId>
-    <version>3.0.0</version>
-
+    <version>1.0.0</version>
+	<packaging>jar</packaging>
+	
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <encoding>UTF-8</encoding>
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+	    <utils.release.version>3.10</utils.release.version>
+	    <lombok>1.18.10</lombok>
     </properties>
 	
+	<name>ytooo-util</name>
+	<description>ytooo's utils</description>
+	<url>https://www.ytooo.ml</url>
 	
 	<!--licenses信息-->
 	<licenses>
@@ -45,7 +51,7 @@
 	<distributionManagement>
 		<repository>
 			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 		</repository>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -55,19 +61,28 @@
 
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+	    <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
+	    <dependency>
+		    <groupId>org.apache.pdfbox</groupId>
+		    <artifactId>pdfbox</artifactId>
+		    <version>2.0.18</version>
+	    </dependency>
+	
+	
+	    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.8</version>
+            <version>${lombok}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.9</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+	    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+	    <dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.8.1</version>
+	    </dependency>
+	
+	    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -104,41 +119,28 @@
             <version>2.1.6.RELEASE</version>
         </dependency>
 	    
-        <dependency>
-            <groupId>com.adc</groupId>
-            <artifactId>adc-da-base</artifactId>
-            <version>2.3.0</version>
-	        <scope>system</scope>
-	        <systemPath>${project.basedir}/lib/adc-da-base-2.3.0.jar</systemPath>
-        </dependency>
+	
+	    <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-scratchpad -->
 	    <dependency>
-		    <groupId>com.adc</groupId>
-		    <artifactId>adc-da-util</artifactId>
-		    <version>2.3.2</version>
-		    <scope>system</scope>
-		    <systemPath>${project.basedir}/lib/adc-da-util-2.3.2.jar</systemPath>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-scratchpad</artifactId>
+		    <version>4.1.1</version>
 	    </dependency>
-	    
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>2.0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-scratchpad</artifactId>
-            <version>3.12</version>
-        </dependency>
-        <dependency>
+	
+	    <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+	    <dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>4.1.1</version>
+	    </dependency>
+	
+	
+	    <dependency>
             <groupId>fr.opensagres.xdocreport</groupId>
             <artifactId>org.apache.poi.xwpf.converter.core</artifactId>
             <version>1.0.5</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.17</version>
-        </dependency>
+        
         <dependency>
             <groupId>fr.opensagres.xdocreport</groupId>
             <artifactId>org.apache.poi.xwpf.converter.xhtml</artifactId>
@@ -196,43 +198,46 @@
 	
 	<build>
 		<plugins>
-<!--			&lt;!&ndash; doc plugin,Maven API文档生成插件 &ndash;&gt;-->
+			<!-- doc plugin,Maven API文档生成插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.3</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+<!--			&lt;!&ndash; resources plugin,Maven 资源插件 &ndash;&gt;-->
 <!--			<plugin>-->
 <!--				<groupId>org.apache.maven.plugins</groupId>-->
-<!--				<artifactId>maven-javadoc-plugin</artifactId>-->
+<!--				<artifactId>maven-source-plugin</artifactId>-->
 <!--				<version>3.1.0</version>-->
 <!--				<executions>-->
 <!--					<execution>-->
-<!--						<id>attach-javadocs</id>-->
+<!--						<id>attach-sources</id>-->
 <!--						<goals>-->
-<!--							<goal>jar</goal>-->
+<!--							<goal>jar-no-fork</goal>-->
 <!--						</goals>-->
 <!--					</execution>-->
 <!--				</executions>-->
 <!--			</plugin>-->
-			<!-- resources plugin,Maven 资源插件 -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>3.1.0</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<!-- compiler plugin,Maven 编译插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
-					<showWarnings>true</showWarnings>
+					<compilerVersion>${java.version}</compilerVersion>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 			<!-- gpg plugin,用于签名认证 -->
@@ -275,13 +280,6 @@
 				<configuration>
 					<verbose>true</verbose>
 					<overwrite>true</overwrite>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<includeSystemScope>true</includeSystemScope>
 				</configuration>
 			</plugin>
 		</plugins>

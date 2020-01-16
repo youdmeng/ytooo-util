@@ -16,9 +16,9 @@
 		
 		<!-- 数据库连接 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-		                connectionURL="jdbc:mysql://144.34.215.165:23306/quartz?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true"
+		                connectionURL="jdbc:mysql://local:3306/quartz?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true"
 		                userId="root"
-		                password="Qiuqiu0712!">
+		                password="root">
 		</jdbcConnection>
 		
 		<javaTypeResolver>
