@@ -1,5 +1,6 @@
 package com.ytooo.string;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +15,9 @@ import java.util.regex.Pattern;
 /**
  * Created by ChengZhenxing on 2017/3/1.
  */
-public class IdCardInfoValidator {
+public class IdCardUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(IdCardInfoValidator.class);
+    private static Logger logger = LoggerFactory.getLogger(IdCardUtil.class);
     /**
      * 省，直辖市代码表： { 11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",
      * 21:"辽宁",22:"吉林",23:"黑龙江",31:"上海",32:"江苏",
@@ -25,7 +26,7 @@ public class IdCardInfoValidator {
      * 51:"四川",52:"贵州",53:"云南",54:"西藏",61:"陕西",62:"甘肃",
      * 63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外"}
      */
-    protected static String codeAndCity[][] = { { "11", "北京" }, { "12", "天津" },
+    protected static String[][] codeAndCity = { { "11", "北京" }, { "12", "天津" },
             { "13", "河北" }, { "14", "山西" }, { "15", "内蒙古" }, { "21", "辽宁" },
             { "22", "吉林" }, { "23", "黑龙江" }, { "31", "上海" }, { "32", "江苏" },
             { "33", "浙江" }, { "34", "安徽" }, { "35", "福建" }, { "36", "江西" },
@@ -36,16 +37,16 @@ public class IdCardInfoValidator {
             { "65", "新疆" }, { "71", "台湾" }, { "81", "香港" }, { "82", "澳门" },
             { "91", "国外" } };
 
-    private static String cityCode[] = { "11", "12", "13", "14", "15", "21", "22",
+    private static String[] cityCode = { "11", "12", "13", "14", "15", "21", "22",
             "23", "31", "32", "33", "34", "35", "36", "37", "41", "42", "43",
             "44", "45", "46", "50", "51", "52", "53", "54", "61", "62", "63",
             "64", "65", "71", "81", "82", "91" };
 
     // 每位加权因子
-    private static int power[] = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };
+    private static int[] power = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };
 
     // 第18位校检码
-    private static String verifyCode[] = { "1", "0", "X", "9", "8", "7", "6", "5",
+    private static String[] verifyCode = { "1", "0", "X", "9", "8", "7", "6", "5",
             "4", "3", "2" };
 
     /**
@@ -104,7 +105,7 @@ public class IdCardInfoValidator {
         String idcard17 = idcard.substring(0, 17);
         // 获取第18位
         String idcard18Code = idcard.substring(17, 18);
-        char c[] = null;
+        char[] c = null;
         String checkCode = "";
         // 是否都为数字
         if (isDigital(idcard17)) {
@@ -128,9 +129,7 @@ public class IdCardInfoValidator {
                 return false;
             }
             // 将身份证的第18位与算出来的校码进行匹配，不相等就为假
-            if (!idcard18Code.equalsIgnoreCase(checkCode)) {
-                return false;
-            }
+            return idcard18Code.equalsIgnoreCase(checkCode);
         }
         return true;
     }
@@ -418,5 +417,17 @@ public class IdCardInfoValidator {
             a[k++] = Integer.parseInt(String.valueOf(temp));
         }
         return a;
+    }
+
+    /**
+     * 身份证号****
+     * @param idNo
+     * @return
+     */
+    public static String getIdNoStar(String idNo){
+        if (StringUtils.isBlank(idNo)||idNo.length()<14){
+            return "";
+        }
+        return idNo.substring(0,6)+"*****"+idNo.substring(14);
     }
 }

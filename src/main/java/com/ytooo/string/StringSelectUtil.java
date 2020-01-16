@@ -45,8 +45,6 @@ public class StringSelectUtil {
 
     public static int ChineseNum(String value) {
         String regex = "[\u4e00-\u9fff]";
-        int count = (" " + value + " ").split (regex).length - 1;
-
-        return count;
+        return (" " + value + " ").split (regex).length - 1;
     }
 }

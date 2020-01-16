@@ -15,15 +15,15 @@ public class StarStrUtil {
         if(StringUtils.hasText(str)) {
             str = str.trim();
             if(str.length() == 18){
-                String star = "";
+                StringBuilder star = new StringBuilder();
                 for(int i = 0 ;i < str.length() - 8;i++){
-                    star += "*";
+                    star.append("*");
                 }
                 str = str.substring(0, 7) + star + str.substring(str.length() - 1);
             }else if(str.length() == 15) {
-                String star2 = "";
+                StringBuilder star2 = new StringBuilder();
                 for(int i=0 ;i < str.length() - 4; i++){
-                    star2 += "*";
+                    star2.append("*");
                 }
                 str = str.substring(0, 3) + star2 + str.substring(str.length() - 1);
             }
@@ -64,18 +64,18 @@ public class StarStrUtil {
                     str = strs[0] + "***@" + strs[1];
                 }
             } else {
-                String star = "";
+                StringBuilder star = new StringBuilder();
                 if(str.length() < 4) {
                     for(int i = 0 ;i < 11 - str.length(); i++){
-                        star += "*";
+                        star.append("*");
                     }
                     str = star + str;
-                } else if(str.length() >= 4 && str.length() <= 11) {
+                } else if(str.length() <= 11) {
                     str = "*******" + str.substring(str.length() - 4);
                 }else{
-                    String star2 = "";
+                    StringBuilder star2 = new StringBuilder();
                     for(int i = 0 ;i < str.length() - 8;i++){
-                        star2 += "*";
+                        star2.append("*");
                     }
                     str = str.substring(0, 4) + star2 + str.substring(str.length() - 4);
                 }
