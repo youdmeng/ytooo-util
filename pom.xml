@@ -6,7 +6,7 @@
 
     <groupId>ml.ytooo</groupId>
     <artifactId>ytooo-util</artifactId>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
 	<packaging>jar</packaging>
 	
     <properties>
@@ -217,6 +217,12 @@
 		    <groupId>net.sf.dozer</groupId>
 		    <artifactId>dozer</artifactId>
 		    <version>5.5.1</version>
+	    </dependency>
+	    <!-- https://mvnrepository.com/artifact/org.jdom/jdom2 -->
+	    <dependency>
+		    <groupId>org.jdom</groupId>
+		    <artifactId>jdom2</artifactId>
+		    <version>2.0.6</version>
 	    </dependency>
 
     </dependencies>
