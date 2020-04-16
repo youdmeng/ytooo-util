@@ -193,7 +193,7 @@ public class DateUtil {
 			date = org.apache.commons.lang3.time.DateUtils.parseDate(dateStr,
 					DATE_PARSE_PATTERNS);
 		} catch (ParseException e) {
-		    e.printStackTrace();
+
             throw new RuntimeException();
 		}
 		return date;
@@ -214,7 +214,6 @@ public class DateUtil {
 			date = org.apache.commons.lang3.time.DateUtils.parseDate(dateStr,
 					new String[] { parsePattern.toString() });
 		} catch (ParseException e) {
-            e.printStackTrace();
             throw new RuntimeException();
 		}
 		return date;
