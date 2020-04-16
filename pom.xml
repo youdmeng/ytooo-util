@@ -6,7 +6,7 @@
 
     <groupId>ml.ytooo</groupId>
     <artifactId>ytooo-util</artifactId>
-    <version>3.5.0</version>
+    <version>3.5.2</version>
 	<packaging>jar</packaging>
 	
     <properties>
