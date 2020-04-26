@@ -212,11 +212,11 @@ public class HttpUtil {
         entity = response.getEntity();
         InputStream in = entity.getContent();
 
-        long length = entity.getContentLength();
-        if (0 >= length) {
-            log.error("文件 ["+baseUrl+"] 不存在");
-            return null;
-        }
+//        long length = entity.getContentLength();
+//        if (0 >= length) {
+//            log.error("文件 ["+baseUrl+"] 不存在");
+//            return null;
+//        }
         byte[] buffer = new byte[1024];
         int readLength = 0;
 
