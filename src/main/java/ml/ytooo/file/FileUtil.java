@@ -1,6 +1,7 @@
 package ml.ytooo.file;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.poi.hwpf.HWPFDocument;
@@ -14,6 +15,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.w3c.dom.Document;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -187,6 +189,26 @@ public class FileUtil {
         outStream.close();
         return htmlPath + htmlName;
     }
+
+    public void fildDownload(String path, HttpServletResponse response) throws IOException {
+        FileInputStream in = new FileInputStream(path);
+        String fileName = StringUtils.substring(path, path.lastIndexOf("/"), path.length());
+        response.setHeader("Content-Length", String.valueOf(in.available()));
+        response.setHeader("Content-disposition", String.format("attachment; filename=\"%s\"", fileName));
+//        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        OutputStream outputStream = response.getOutputStream();
+
+        // 循环取出流中的数据
+        byte[] b = new byte[1024];
+        int len;
+        while ((len = in.read(b)) > 0) {
+            outputStream.write(b, 0, len);
+        }
+        in.close();
+        outputStream.flush();
+        outputStream.close();
+    }
+
 
     /**
      * @since 把pdf文件转为html文件
