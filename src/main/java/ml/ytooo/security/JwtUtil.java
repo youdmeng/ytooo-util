@@ -1,6 +1,5 @@
 package ml.ytooo.security;
 
-import ml.ytooo.config.JwtCconfig;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang3.StringUtils;
@@ -22,9 +21,7 @@ public class JwtUtil {
 
     private static Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-
-    @Autowired
-    private JwtCconfig jwtCconfig;
+    private static final String PASSWORD = "";
 
     private static JwtUtil jwtUtil;
 
@@ -56,7 +53,7 @@ public class JwtUtil {
      */
     private static Key getKeyInstance() {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        String apiKey = DatatypeConverter.printBase64Binary(jwtUtil.jwtCconfig.getPassword().getBytes());
+        String apiKey = DatatypeConverter.printBase64Binary(PASSWORD.getBytes());
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(apiKey);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
         return signingKey;

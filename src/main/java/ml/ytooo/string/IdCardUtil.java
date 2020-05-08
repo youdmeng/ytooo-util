@@ -1,7 +1,6 @@
 package ml.ytooo.string;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public class IdCardUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(IdCardUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(IdCardUtil.class);
     /**
      * 省，直辖市代码表： { 11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",
      * 21:"辽宁",22:"吉林",23:"黑龙江",31:"上海",32:"江苏",
@@ -37,30 +36,18 @@ public class IdCardUtil {
             { "65", "新疆" }, { "71", "台湾" }, { "81", "香港" }, { "82", "澳门" },
             { "91", "国外" } };
 
-    private static String[] cityCode = { "11", "12", "13", "14", "15", "21", "22",
+    private static final String[] cityCode = { "11", "12", "13", "14", "15", "21", "22",
             "23", "31", "32", "33", "34", "35", "36", "37", "41", "42", "43",
             "44", "45", "46", "50", "51", "52", "53", "54", "61", "62", "63",
             "64", "65", "71", "81", "82", "91" };
 
     // 每位加权因子
-    private static int[] power = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };
+    private static final int[] power = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };
 
     // 第18位校检码
-    private static String[] verifyCode = { "1", "0", "X", "9", "8", "7", "6", "5",
+    private static final String[] verifyCode = { "1", "0", "X", "9", "8", "7", "6", "5",
             "4", "3", "2" };
 
-    /**
-     * 验证所有的身份证的合法性
-     *
-     * @param idcard
-     * @return
-     */
-    public static boolean isValidatedAllIdcard(String idcard) {
-        if (idcard.length() == 15) {
-            idcard = convertIdcarBy15bit(idcard);
-        }
-        return isValidate18Idcard(idcard);
-    }
 
     /**
      * <p>
@@ -229,72 +216,13 @@ public class IdCardUtil {
     }
 
     /**
-     * 将15位的身份证转成18位身份证
-     *
-     * @param idcard
-     * @return
-     */
-    public static String convertIdcarBy15bit(String idcard) {
-        String idcard17 = null;
-        // 非15位身份证
-        if (idcard.length() != 15) {
-            return null;
-        }
-
-        if (isDigital(idcard)) {
-            // 获取出生年月日
-            String birthday = idcard.substring(6, 12);
-            Date birthdate = null;
-            try {
-                birthdate = new SimpleDateFormat("yyMMdd").parse(birthday);
-            } catch (ParseException e) {
-                logger.warn("获取身份证日期格式错误", e.getMessage(), e);
-            }
-            if(birthdate.after(new Date())) {
-                DateTime realbirthday = new DateTime(birthdate);
-                birthdate = realbirthday.minusYears(100).toDate();
-            }
-            Calendar cday = Calendar.getInstance();
-            cday.setTime(birthdate);
-            String year = String.valueOf(cday.get(Calendar.YEAR));
-
-            idcard17 = idcard.substring(0, 6) + year + idcard.substring(8);
-
-            char c[] = idcard17.toCharArray();
-            String checkCode = "";
-
-            if (null != c) {
-                int bit[] = new int[idcard17.length()];
-
-                // 将字符数组转为整型数组
-                bit = converCharToInt(c);
-                int sum17 = 0;
-                sum17 = getPowerSum(bit);
-
-                // 获取和值与11取模得到余数进行校验码
-                checkCode = getCheckCodeBySum(sum17);
-                // 获取不到校验位
-                if (null == checkCode) {
-                    return null;
-                }
-
-                // 将前17位与第18位校验码拼接
-                idcard17 += checkCode;
-            }
-        } else { // 身份证包含数字
-            return null;
-        }
-        return idcard17;
-    }
-
-    /**
      * 15位和18位身份证号码的基本数字和位数验校
      *
      * @param idcard
      * @return
      */
     public boolean isIdcard(String idcard) {
-        return idcard == null || "".equals(idcard) ? false : Pattern.matches(
+        return idcard != null && !"".equals(idcard) && Pattern.matches(
                 "(^\\d{15}$)|(\\d{17}(?:\\d|x|X)$)", idcard);
     }
 
@@ -305,7 +233,7 @@ public class IdCardUtil {
      * @return
      */
     public boolean is15Idcard(String idcard) {
-        return idcard == null || "".equals(idcard) ? false : Pattern.matches(
+        return idcard != null && !"".equals(idcard) && Pattern.matches(
                 "^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$",
                 idcard);
     }
@@ -330,7 +258,7 @@ public class IdCardUtil {
      * @return
      */
     public static boolean isDigital(String str) {
-        return str == null || "".equals(str) ? false : str.matches("^[0-9]*$");
+        return str != null && !"".equals(str) && str.matches("^[0-9]*$");
     }
 
     /**
