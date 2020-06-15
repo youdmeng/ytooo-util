@@ -1,5 +1,7 @@
 package ml.ytooo.time;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -209,6 +211,9 @@ public class DateUtil {
 	 * @return Date型日期
 	 */
 	public static Date parseDate(String dateStr, String parsePattern) {
+        if (StringUtils.isBlank(dateStr)) {
+            return null;
+        }
 		Date date = null;
 		try {
 			date = org.apache.commons.lang3.time.DateUtils.parseDate(dateStr,
