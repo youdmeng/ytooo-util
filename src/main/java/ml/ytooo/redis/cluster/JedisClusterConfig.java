@@ -1,10 +1,8 @@
-package ml.ytooo.redis;
+package ml.ytooo.redis.cluster;
 
+import ml.ytooo.redis.RedisProperties;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 

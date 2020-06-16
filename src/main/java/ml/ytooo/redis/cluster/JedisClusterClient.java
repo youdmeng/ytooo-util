@@ -1,15 +1,13 @@
-package ml.ytooo.redis;
+package ml.ytooo.redis.cluster;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisCluster;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class JedisClient {
+public class JedisClusterClient {
 
     private static final JedisCluster jedisCluster = JedisClusterConfig.getInstance().getJedisCluster();
 
