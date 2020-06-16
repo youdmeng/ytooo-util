@@ -9,20 +9,31 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import javax.annotation.Resource;
+
+import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
-import org.springframework.stereotype.Component;
 
-@Component("beanMapper")
 public class BeanMapper {
-    @Resource
-    private Mapper dozer;
+    private static BeanMapper instance;
 
-    public BeanMapper() {
+    private BeanMapper() {
     }
 
+    public static BeanMapper getInstance() {
+        if (null == instance) {
+            synchronized (BeanMapper.class) {
+                if (null == instance) {
+                    instance = new BeanMapper();
+                }
+            }
+        }
+        return instance;
+    }
+
+    private static Mapper dozer = new DozerBeanMapper();
+
     public <T> T map(Object source, Class<T> destinationClass) {
-        return source == null ? null : this.dozer.map(source, destinationClass);
+        return source == null ? null : dozer.map(source, destinationClass);
     }
 
     public <T> List<T> mapList(Collection sourceList, Class<T> destinationClass) {
@@ -32,18 +43,17 @@ public class BeanMapper {
         } else {
             Iterator i$ = sourceList.iterator();
 
-            while(i$.hasNext()) {
+            while (i$.hasNext()) {
                 Object sourceObject = i$.next();
-                Object destinationObject = this.dozer.map(sourceObject, destinationClass);
+                Object destinationObject = dozer.map(sourceObject, destinationClass);
                 destinationList.add(destinationObject);
             }
 
             return destinationList;
         }
     }
-
     public void copy(Object source, Object destinationObject) {
-        this.dozer.map(source, destinationObject);
+        dozer.map(source, destinationObject);
     }
 
 }
