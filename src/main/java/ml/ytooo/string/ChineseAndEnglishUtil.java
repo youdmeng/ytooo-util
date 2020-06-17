@@ -28,12 +28,4 @@ public class ChineseAndEnglishUtil {
         Matcher m = p.matcher(str);
         return m.find();
     }
-
-    public static void main(String[] args) {
-        System.out.println(isChinese('员'));
-        System.out.println(isChinese('s'));
-        System.out.println(isEnglish("程序员之家"));
-        System.out.println(isEnglish("robert"));
-        System.out.println(isChinese("程序员论坛"));
-    }
 }
