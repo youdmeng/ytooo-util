@@ -11,6 +11,23 @@ public class JedisClusterClient {
 
     private static final JedisCluster jedisCluster = JedisClusterConfig.getInstance().getJedisCluster();
 
+
+    private static JedisClusterClient instance;
+
+    private JedisClusterClient() {
+    }
+
+    public static JedisClusterClient getInstance() {
+        if (null == instance) {
+            synchronized (JedisClusterConfig.class) {
+                if (null == instance) {
+                    instance = new JedisClusterClient();
+                }
+            }
+        }
+        return instance;
+    }
+
     /**
      * get
      *
@@ -19,7 +36,7 @@ public class JedisClusterClient {
      * @param <T>
      * @return
      */
-    public static <T> T get(String key, Type type) {
+    public <T> T get(String key, Type type) {
         String json = jedisCluster.get(key);
         if (StringUtils.isNotEmpty(json)) {
             return JSON.parseObject(json, type);
@@ -36,7 +53,7 @@ public class JedisClusterClient {
      * @param <T>
      * @return
      */
-    public static <T> T get(String key, Class<T> clazz) {
+    public <T> T get(String key, Class<T> clazz) {
         String json = jedisCluster.get(key);
         if (StringUtils.isNotEmpty(json)) {
             return JSON.parseObject(json, clazz);
@@ -51,7 +68,7 @@ public class JedisClusterClient {
      * @param key
      * @param o
      */
-    public static void set(String key, Object o) {
+    public void set(String key, Object o) {
         String json = JSON.toJSONString(o);
         jedisCluster.set(key, json);
     }
@@ -63,7 +80,7 @@ public class JedisClusterClient {
      * @param o
      * @param expire
      */
-    public static void setAndExpire(String key, Object o, int expire) {
+    public void setAndExpire(String key, Object o, int expire) {
         String json = JSON.toJSONString(o);
         jedisCluster.set(key, json);
         jedisCluster.expire(key, expire);
@@ -79,7 +96,7 @@ public class JedisClusterClient {
      * @param key
      * @return
      */
-    public static String get(String key) {
+    public String get(String key) {
         return jedisCluster.get(key);
     }
 
@@ -95,7 +112,7 @@ public class JedisClusterClient {
      * @param value
      * @return
      */
-    public static String set(String key, String value) {
+    public String set(String key, String value) {
         return jedisCluster.set(key, value);
     }
 
@@ -106,7 +123,7 @@ public class JedisClusterClient {
      * @param key
      * @return
      */
-    public static String hget(String hkey, String key) {
+    public String hget(String hkey, String key) {
         return jedisCluster.hget(hkey, key);
     }
 
@@ -118,7 +135,7 @@ public class JedisClusterClient {
      * @param value
      * @return
      */
-    public static long hset(String hkey, String key, String value) {
+    public long hset(String hkey, String key, String value) {
         return jedisCluster.hset(hkey, key, value);
     }
 
@@ -128,7 +145,7 @@ public class JedisClusterClient {
      * @param key
      * @return
      */
-    public static long incr(String key) {
+    public long incr(String key) {
         return jedisCluster.incr(key);
     }
 
@@ -138,7 +155,7 @@ public class JedisClusterClient {
      * @param key
      * @return
      */
-    public static Long decr(String key) {
+    public Long decr(String key) {
         return jedisCluster.decr(key);
     }
 
@@ -149,7 +166,7 @@ public class JedisClusterClient {
      * @param second
      * @return
      */
-    public static long expire(String key, int second) {
+    public long expire(String key, int second) {
         return jedisCluster.expire(key, second);
     }
 
@@ -159,7 +176,7 @@ public class JedisClusterClient {
      * @param key
      * @return
      */
-    public static long ttl(String key) {
+    public long ttl(String key) {
         return jedisCluster.ttl(key);
     }
 
@@ -169,7 +186,7 @@ public class JedisClusterClient {
      * @param key
      * @return
      */
-    public static long del(String key) {
+    public long del(String key) {
         return jedisCluster.del(key);
     }
 
@@ -180,7 +197,7 @@ public class JedisClusterClient {
      * @param key
      * @return
      */
-    public static long hdel(String hkey, String key) {
+    public long hdel(String hkey, String key) {
 
         return jedisCluster.hdel(hkey, key);
     }
@@ -192,7 +209,7 @@ public class JedisClusterClient {
      * @param string
      * @return
      */
-    public static Long rpush(String key, String string) {
+    public Long rpush(String key, String string) {
         return jedisCluster.rpush(key, string);
     }
 
@@ -203,7 +220,7 @@ public class JedisClusterClient {
      * @param string
      * @return
      */
-    public static Long lpush(String key, String string) {
+    public Long lpush(String key, String string) {
         return jedisCluster.lpush(key, string);
     }
 
@@ -213,7 +230,7 @@ public class JedisClusterClient {
      * @param key
      * @return
      */
-    public static Boolean exists(String key) {
+    public Boolean exists(String key) {
         return jedisCluster.exists(key);
     }
 
@@ -224,14 +241,14 @@ public class JedisClusterClient {
      * @param key
      * @return
      */
-    public static List<String> brpop(int timeout, String key) {
+    public List<String> brpop(int timeout, String key) {
         return jedisCluster.brpop(timeout, key);
     }
 
     /**
      * hexists
      */
-    public static Boolean hexists(String hkey, String key) {
+    public Boolean hexists(String hkey, String key) {
         return jedisCluster.hexists(hkey, key);
     }
 
