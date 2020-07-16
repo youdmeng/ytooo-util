@@ -12,7 +12,6 @@ import java.util.Set;
 /**
  * JedisClusterConfig
  */
-@Configuration
 public class JedisClusterConfig {
 
     private static JedisClusterConfig instance;
