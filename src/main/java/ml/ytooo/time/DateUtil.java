@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 日期工具类
@@ -181,6 +183,31 @@ public class DateUtil {
      *
      */
 	public static final long MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+
+	/**
+	 * 计算两个日期之间相差的天数、时分秒
+	 * @param start
+	 * @param end
+	 * @return
+	 * @author Youdmeng
+	 * Date 2020-08-04
+	 **/
+    public static Map<String, Integer> betweenTime(Date start, Date end) {
+
+        long pass = end.getTime() - start.getTime();
+        Map<String, Integer> map = new HashMap<>();
+        //1秒：1000 1分钟：60000;1小时:3600000；1天为86400000
+        //计算天数
+        map.put("day", (int) (pass / 86400000));
+        //计算小时
+        map.put("hour", (int) ((pass % 86400000) / 3600000));
+        //计算分钟
+        map.put("minute", (int) ((pass % 86400000) % 3600000) / 60000);
+        //计算秒
+        map.put("second", (int) (((pass % 86400000) % 3600000) % 60000) / 1000);
+
+        return map;
+    }
 
 	/**
 	 * 将给定的日期字符串，按照预定的日期格式，转化为Date型数据

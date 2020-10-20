@@ -2,10 +2,7 @@ package ml.ytooo.string;
 
 import org.springframework.util.StringUtils;
 
-/**
- * Created by ebiz on 2017/8/13.
- */
-public class StarStrUtil {
+public class StarTransFormUtil {
     /**
      * 证件号星号加密
      * @param str
@@ -96,6 +93,34 @@ public class StarStrUtil {
                 str = str.substring(0, 1) + "**";
             } else {
                 str = str.substring(0, 1) + "*";
+            }
+        }
+        return str;
+    }
+
+    /**
+     * 字符串换行添加</br>
+     * @param str 需要格式化的字符串
+     * @param len 字符串分割长度
+     * @param headLen  属性名长度
+     * @return    格式化后的字符串
+     * @author Youdmeng
+     * Date 2020-10-15 
+     **/
+    public static String strAddBr(String str, int len,int headLen) {
+        if (0 == len || null == str) { // 数据过滤
+            return str;
+        }
+        int length = str.length(); // 初始字符长度
+        int times = length / len;
+        for (int i = 0; i <= times; i++) {
+            length = str.length(); // 每次添加<br/>字符扩张
+            int end = (i + 1) * len + (i * 5) - (0 == i ? 0 : headLen); //配置 添加头数字后,截断长度,并减去多赋值的头
+            if (end < length) {
+                str = str.substring(0, end) + "<br/>" + str.substring(end, length);
+            }
+            if (i == 0) { //第二行后添加头长度
+                len += headLen;
             }
         }
         return str;
