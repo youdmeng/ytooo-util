@@ -118,7 +118,7 @@ public class StarTransFormUtil {
             return str;
         }
         int length = str.length(); // 初始字符长度
-        int times = length / len;
+        int times = length / len;  // 添加次数
         for (int i = 0; i <= times; i++) {
             length = str.length(); // 每次添加<br/>字符扩张
             int end = (i + 1) * len + (i * addStr.length()) - (0 == i ? 0 : headLen); //配置 添加头数字后,截断长度,并减去多赋值的头

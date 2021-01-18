@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 
 import java.io.ByteArrayOutputStream;
@@ -44,17 +45,7 @@ public class HttpUtil {
     private static final String HTTP_REQUEST_FAILED_S = "http request failed %s";
 
     private static final String JSON_RESPONSE_IS_NULL = "jsonResponse is null";
-
-    public static String httpSend(String url, Map<String, Object> param, boolean post) {
-        String response = null;
-        if (post) {
-            response = post(url, param);
-        } else {
-            response = get(url, param);
-        }
-        return response;
-    }
-
+    
     public static String post(String baseUrl, Map<String, Object> paramMap) {
         return post(baseUrl, null, null, null, paramMap, null, false);
     }
@@ -192,8 +183,8 @@ public class HttpUtil {
         return post(baseUrl, (String) null, (InputStream) null, paramMap, routeKey, routeValue);
     }
 
-    public static String get(String baseUrl, Map<String, Object> paramMap) {
-        return get(baseUrl, paramMap, null, null);
+    public static String get(String baseUrl, Map<String, Object> paramMap, Map<String, Object> heads) {
+        return get(baseUrl, paramMap, heads, null, null);
     }
 
     public static ByteArrayOutputStream download(String baseUrl, Map<String, Object> paramMap) throws IOException {
@@ -220,25 +211,36 @@ public class HttpUtil {
         byte[] buffer = new byte[1024];
         int readLength = 0;
 
-
         while ((readLength = in.read(buffer)) > 0) {
             out.write(buffer, 0, readLength);
         }
         return out;
     }
 
-    public static String get(String baseUrl, Map<String, Object> paramMap, String routeKey, String routeValue) {
+    public static String get(String baseUrl, Map<String, Object> paramMap, Map<String, Object> heads, String routeKey, String routeValue) {
         HttpResponse<String> jsonResponse = null;
         try {
             if (!StringUtils.isEmpty(routeKey) && !StringUtils.isEmpty(routeValue)) {
-                jsonResponse = Unirest.get(baseUrl).header("Accept", "application/json").header("Content-Type", "application/json;charset=UTF-8")
-                        .routeParam(routeKey, URLEncoder.encode(routeValue, "UTF-8")).queryString(paramMap).asString();
+                GetRequest request = Unirest.get(baseUrl).header("Accept", "application/json")
+                        .header("Content-Type", "application/json;charset=UTF-8");
+                if (null != heads) {
+                    heads.forEach((key,value) -> {
+                        request.header(key, (String) value);
+                    });
+                }
+                jsonResponse = request.routeParam(routeKey, URLEncoder.encode(routeValue, "UTF-8")).queryString(paramMap).asString();
             } else {
-                jsonResponse = Unirest.get(baseUrl).header("Accept", "application/json").header("Content-Type", "application/json;charset=UTF-8")
-                        .queryString(paramMap).asString();
+                GetRequest request = Unirest.get(baseUrl).header("Accept", "application/json")
+                        .header("Content-Type", "application/json;charset=UTF-8");
+                if (null != heads) {
+                    heads.forEach((key,value) -> {
+                        request.header(key, (String) value);
+                    });
+                }
+                jsonResponse = request.queryString(paramMap).asString();
             }
         } catch (UnirestException | UnsupportedEncodingException e) {
-            log.error(String.format("http request failed %s", new Object[] { baseUrl }), e);
+            log.error(String.format("http request failed %s", baseUrl), e);
         }
         return checkJsonResponse(jsonResponse, baseUrl);
     }
