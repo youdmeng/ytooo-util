@@ -5,8 +5,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -65,7 +63,7 @@ public class AESToolUtil {
             //解决办法：
             //在项目的Build path中先移除JRE System Library，再添加库JRE System Library，重新编译后就一切正常了。
             //11.将字符串返回
-            return new String(new BASE64Encoder().encode(byteAES));
+            return Base64.encodeBase64String(byteAES);
         } catch (Exception e){
             logger.error("数据AES加密失败", e);
             //加密失败
@@ -100,7 +98,7 @@ public class AESToolUtil {
             //7.初始化密码器，第一个参数为加密(Encrypt_mode)或者解密(Decrypt_mode)操作，第二个参数为使用的KEY
             cipher.init(Cipher.DECRYPT_MODE, key);
             //8.将加密并编码后的内容解码成字节数组
-            byte [] byteContent= new BASE64Decoder().decodeBuffer(aesEncode);
+            byte [] byteContent= Base64.decodeBase64(aesEncode);
             /*
              * 解密
              */
