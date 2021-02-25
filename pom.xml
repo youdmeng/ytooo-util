@@ -6,7 +6,7 @@
 
     <groupId>ml.ytooo</groupId>
     <artifactId>ytooo-util</artifactId>
-    <version>3.9.0</version>
+    <version>5.0.0</version>
 	<packaging>jar</packaging>
 	
     <properties>
@@ -23,7 +23,7 @@
 	
 	<name>ytooo-util</name>
 	<description>ytooo's utils</description>
-	<url>https://www.ytooo.ml</url>
+	<url>https://www.ytooo.top</url>
 	
 	<!--licenses信息-->
 	<licenses>
@@ -44,8 +44,8 @@
 		<developer>
 			<name>youdmeng</name>
 			<email>youdmeng@hotmail.com</email>
-			<organization>http://www.ytooo.ml</organization>
-			<organizationUrl>http://www.ytooo.ml</organizationUrl>
+			<organization>http://www.ytooo.top</organization>
+			<organizationUrl>http://www.ytooo.top</organizationUrl>
 		</developer>
 	</developers>
 	
