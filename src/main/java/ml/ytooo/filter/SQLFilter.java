@@ -15,7 +15,7 @@ public class SQLFilter {
             String[] var2 = keywords;
             int var3 = keywords.length;
 
-            for(int var4 = 0; var4 < var3; ++var4) {
+            for (int var4 = 0; var4 < var3; ++var4) {
                 String keyword = var2[var4];
                 if (StringUtils.indexOfIgnoreCase(str, keyword + " ") != -1) {
                     throw new ServiceException("包含非法字符");

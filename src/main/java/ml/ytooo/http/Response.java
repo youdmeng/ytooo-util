@@ -1,5 +1,8 @@
 package ml.ytooo.http;
 
+/**
+ * @author youdmeng
+ */
 public class Response<T> {
 
     private int code = 0;

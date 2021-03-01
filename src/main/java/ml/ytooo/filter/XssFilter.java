@@ -44,7 +44,7 @@ public class XssFilter implements Filter {
         if (isExcludedPage) {
             chain.doFilter(request, response);
         } else {
-            XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper((HttpServletRequest)request);
+            XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper((HttpServletRequest) request);
             chain.doFilter(xssRequest, response);
         }
 

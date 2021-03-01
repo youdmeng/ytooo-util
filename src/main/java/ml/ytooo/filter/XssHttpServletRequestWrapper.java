@@ -67,7 +67,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     public String[] getParameterValues(String name) {
         String[] parameters = super.getParameterValues(name);
         if (parameters != null && parameters.length != 0) {
-            for(int i = 0; i < parameters.length; ++i) {
+            for (int i = 0; i < parameters.length; ++i) {
                 parameters[i] = this.xssSqlEncode(parameters[i]);
             }
 
@@ -82,11 +82,11 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         Map<String, String[]> parameters = super.getParameterMap();
         Iterator var3 = parameters.keySet().iterator();
 
-        while(var3.hasNext()) {
-            String key = (String)var3.next();
-            String[] values = (String[])parameters.get(key);
+        while (var3.hasNext()) {
+            String key = (String) var3.next();
+            String[] values = (String[]) parameters.get(key);
 
-            for(int i = 0; i < values.length; ++i) {
+            for (int i = 0; i < values.length; ++i) {
                 values[i] = this.xssSqlEncode(values[i]);
             }
 
@@ -116,6 +116,6 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     }
 
     public static HttpServletRequest getOrgRequest(HttpServletRequest request) {
-        return request instanceof XssHttpServletRequestWrapper ? ((XssHttpServletRequestWrapper)request).getOrgRequest() : request;
+        return request instanceof XssHttpServletRequestWrapper ? ((XssHttpServletRequestWrapper) request).getOrgRequest() : request;
     }
 }

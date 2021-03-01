@@ -21,12 +21,12 @@ import java.util.Map;
  */
 public class JwtUtil {
 
-    private static final  Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
     private static final String SALT = "0142add7c2664198863943f24bf4b8b9";
 
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
 
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("username", "大西瓜");

@@ -56,7 +56,7 @@ public class RSAUtils {
             throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, BadPaddingException,
             IllegalBlockSizeException, IOException {
         RSAPrivateKey = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAJaAgT+ZVpd9yLDCVGd91QPN6d33Le5yVm3LutW9f+g9NcYiZbnW9Yw7XXHthVnL/ZIhi4r8SVeoUhTwAACt5/wMeF7gj42mqfPH89fggPj+UibW4Ez9RFtdwxCcqDc2/sfNv8UKkej3RLIFTWZoJHNo2b8Hih2VIUizLDSlIDU7AgMBAAECgYAsUIA+GsddaeMK8N1rb6imKx5ehiaXHEGIqMFFqDueRU+tHHm5g6rfdKdqIVbvftoWChyNewWZcu1gTt6hVJOGtuvaTO51aQbN4N7sR5Rpxji3eD3qUKUGol3dWgLKXbpneBvT4WC3YgvJzR0Q/oERJBc43pyZNyNEh0U1q8FeaQJBAM1F94g6Aqu+G5aVj2RkZJWkk/k5+Vveqs2F0hOEsb4lReyWHhn8ZzpiRnh2nktloqO2aK4nZiNNIQUyfTDHzvcCQQC7sZW6GMdV30u7w9x9iQOLrmnfm6c2zELYiLTwbalquVxGqMiHALcLhl4BrVl9fuqY9NbjfrX2Wk7w0+9YjUbdAkAWMDXtd7fKMKZyxH/XbjKhKkUEb4vQrmTwCkMG8RT1ZLoGNMPUM0BFQ1Iyuz+pDrdh0tnF2WRk9HVZRnfZyf9JAkBBMo2tCCBt7tPS1FVJ8gceRSaXuuzZtxhdOReJEL6xyNOJ4+VMJ+5tfW44LOwSEL0TBrGCcqhoe7RCKYxReTmtAkB+hjdYMfFw76/flnOBWoSa/rD9FrYSLdPc13ty4VOeeSy0/Z8Y8Yf29xDeP2dwL8VKBzUrP6feMQomxy9sENqE";//ConfigUtil.getValue("RSAPrivateKey");
-        if (null == RSAPrivateKey){
+        if (null == RSAPrivateKey) {
             return null;
         }
         byte[] keyBytes = Base64.decodeBase64(RSAPrivateKey);
@@ -97,7 +97,7 @@ public class RSAUtils {
             throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, BadPaddingException,
             IllegalBlockSizeException, IOException {
         RSAPublicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCWgIE/mVaXfciwwlRnfdUDzend9y3uclZty7rVvX/oPTXGImW51vWMO11x7YVZy/2SIYuK/ElXqFIU8AAAref8DHhe4I+Npqnzx/PX4ID4/lIm1uBM/URbXcMQnKg3Nv7Hzb/FCpHo90SyBU1maCRzaNm/B4odlSFIsyw0pSA1OwIDAQAB";//ConfigUtil.getValue("RSAPublicKey");
-        if (null == RSAPublicKey){
+        if (null == RSAPublicKey) {
             return null;
         }
         byte[] keyBytes = Base64.decodeBase64(RSAPublicKey);

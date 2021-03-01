@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  表名转 bean名 TA_ORG_INFO === >> orgInfo
+ * 表名转 bean名 TA_ORG_INFO === >> orgInfo
  * Created by Youdmeng on 2019/7/8 0008.
  */
 public class StringBuiltifer {

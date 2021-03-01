@@ -45,7 +45,7 @@ public class HttpUtil {
     private static final String HTTP_REQUEST_FAILED_S = "http request failed %s";
 
     private static final String JSON_RESPONSE_IS_NULL = "jsonResponse is null";
-    
+
     public static String post(String baseUrl, Map<String, Object> paramMap) {
         return post(baseUrl, null, null, null, paramMap, null, false);
     }
@@ -59,7 +59,7 @@ public class HttpUtil {
     }
 
     public static String post(String baseUrl, Map<String, String> headerMap, String routekey, String routevalue, Map<String, Object> paramMap,
-            String body, boolean contentType) {
+                              String body, boolean contentType) {
         HttpResponse<String> jsonResponse = null;
         HttpRequestWithBody httpRequestWithBody = null;
         try {
@@ -77,14 +77,14 @@ public class HttpUtil {
                 httpRequestWithBody.body(body);
             jsonResponse = httpRequestWithBody.asString();
         } catch (UnirestException e) {
-            log.error(String.format("http request failed %s", new Object[] { baseUrl }), (Throwable) e);
+            log.error(String.format("http request failed %s", baseUrl), e);
         }
         if (jsonResponse != null) {
             if (isOKStatusCode(jsonResponse.getStatus())) {
                 log.info((String) jsonResponse.getBody());
                 return (String) jsonResponse.getBody();
             }
-            log.error("http request failed {}{}{}", new Object[] { baseUrl, Integer.valueOf(jsonResponse.getStatus()), jsonResponse.getBody() });
+            log.error("http request failed {}{}{}", baseUrl, jsonResponse.getStatus(), jsonResponse.getBody());
             return "";
         }
         log.error("jsonResponse is null");
@@ -92,7 +92,7 @@ public class HttpUtil {
     }
 
     public static Map<String, Object> post(String baseUrl, Map<String, String> headerMap, String routekey, String routevalue,
-            Map<String, Object> paramMap, String body) {
+                                           Map<String, Object> paramMap, String body) {
         String response = null;
         HttpRequestWithBody httpRequestWithBody = null;
         httpRequestWithBody = Unirest.post(baseUrl).header("Accept", "application/json").header("Content-Type", "application/json;charset=UTF-8");
@@ -107,7 +107,7 @@ public class HttpUtil {
                 httpRequestWithBody.body(body);
             HttpResponse<String> httpResponse = httpRequestWithBody.asString();
             response = (String) httpResponse.getBody();
-            log.info("http request success {}{}{}", new Object[] { baseUrl, Integer.valueOf(httpResponse.getStatus()), response });
+            log.info("http request success {}{}{}", baseUrl, httpResponse.getStatus(), response);
             if (!JSON.isValid(response)) {
                 Map<String, Object> result = new HashMap<>();
                 result.put("status", "success");
@@ -129,7 +129,7 @@ public class HttpUtil {
     }
 
     public static String put(String baseUrl, Map<String, String> headerMap, String routekey, String routevalue, Map<String, Object> paramMap,
-            String body) {
+                             String body) {
         String response = null;
         HttpRequestWithBody httpRequestWithBody = null;
         httpRequestWithBody = Unirest.put(baseUrl).header("Accept", "application/json").header("Content-Type", "application/json;charset=UTF-8");
@@ -146,7 +146,7 @@ public class HttpUtil {
             if (isOKStatusCode(httpResponse.getStatus()))
                 return (String) httpResponse.getBody();
         } catch (UnirestException e) {
-            log.error(String.format("http request failed %s %s", new Object[] { baseUrl, response }));
+            log.error(String.format("http request failed %s %s", baseUrl, null));
         }
         return response;
     }
@@ -156,13 +156,13 @@ public class HttpUtil {
         try {
             jsonResponse = Unirest.post(baseUrl).fields(paramMap).field(fileName, uploadFile, fileName).asString();
         } catch (UnirestException e) {
-            log.error(String.format("http request failed %s", new Object[] { baseUrl }), (Throwable) e);
+            log.error(String.format("http request failed %s", baseUrl), (Throwable) e);
         }
         return checkJsonResponse(jsonResponse, baseUrl);
     }
 
     public static String post(String baseUrl, String fileName, InputStream uploadFile, Map<String, Object> paramMap, String routeKey,
-            String routeValue) {
+                              String routeValue) {
         Preconditions.checkArgument((
                 !StringUtils.isEmpty(routeKey) || !StringUtils.isEmpty(routeValue)), "routeKey|routeValue can't be empty.");
         HttpResponse<String> jsonResponse = null;
@@ -174,7 +174,7 @@ public class HttpUtil {
                         .field(fileName, uploadFile, fileName).asString();
             }
         } catch (UnsupportedEncodingException | UnirestException e) {
-            log.error(String.format("http request failed %s", new Object[] { baseUrl }), e);
+            log.error(String.format("http request failed %s", baseUrl), e);
         }
         return checkJsonResponse(jsonResponse, baseUrl);
     }
@@ -224,7 +224,7 @@ public class HttpUtil {
                 GetRequest request = Unirest.get(baseUrl).header("Accept", "application/json")
                         .header("Content-Type", "application/json;charset=UTF-8");
                 if (null != heads) {
-                    heads.forEach((key,value) -> {
+                    heads.forEach((key, value) -> {
                         request.header(key, (String) value);
                     });
                 }
@@ -233,7 +233,7 @@ public class HttpUtil {
                 GetRequest request = Unirest.get(baseUrl).header("Accept", "application/json")
                         .header("Content-Type", "application/json;charset=UTF-8");
                 if (null != heads) {
-                    heads.forEach((key,value) -> {
+                    heads.forEach((key, value) -> {
                         request.header(key, (String) value);
                     });
                 }
@@ -266,21 +266,21 @@ public class HttpUtil {
                 httpRequestWithBody.body(body);
             jsonResponse = httpRequestWithBody.asString();
         } catch (UnsupportedEncodingException | UnirestException e) {
-            log.error(String.format("http request failed %s", new Object[] { baseUrl }), e);
+            log.error(String.format("http request failed %s", baseUrl), e);
         }
         return checkJsonResponse(jsonResponse, baseUrl);
     }
 
     private static boolean isOKStatusCode(int statuscode) {
         switch (statuscode) {
-        case 200:
-            return true;
-        case 202:
-            return true;
-        case 201:
-            return true;
-        case 302:
-            return true;
+            case 200:
+                return true;
+            case 202:
+                return true;
+            case 201:
+                return true;
+            case 302:
+                return true;
         }
         return false;
     }
@@ -289,7 +289,7 @@ public class HttpUtil {
         if (jsonResponse != null) {
             if (isOKStatusCode(jsonResponse.getStatus()))
                 return (String) jsonResponse.getBody();
-            log.error("http post request failed {}{}", baseUrl, Integer.valueOf(jsonResponse.getStatus()));
+            log.error("http post request failed {}{}", baseUrl, jsonResponse.getStatus());
             return "";
         }
         log.error("jsonResponse is null");

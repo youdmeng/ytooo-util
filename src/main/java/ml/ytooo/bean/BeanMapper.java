@@ -52,6 +52,7 @@ public class BeanMapper {
             return destinationList;
         }
     }
+
     public void copy(Object source, Object destinationObject) {
         dozer.map(source, destinationObject);
     }

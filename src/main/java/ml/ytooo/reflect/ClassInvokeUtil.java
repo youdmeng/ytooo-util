@@ -24,12 +24,11 @@ public class ClassInvokeUtil {
         method.invoke(obj, params);
     }
 
-    public static List getAllFields(Object obj) {
-        List filedList = new ArrayList();
+    public static List<Object> getAllFields(Object obj) {
+        List<Object> filedList = new ArrayList<Object>();
         Class cls = obj.getClass();
         Field[] fields = cls.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
+        for (Field field : fields) {
             filedList.add(upperFirst(field.getName()));
         }
         return filedList;
@@ -59,12 +58,11 @@ public class ClassInvokeUtil {
         throw new RuntimeException("Invalid target method " + facadeMethod + " In Class" + facade);
     }
 
-    public static Map initCommonDTO(Object commonDTO) throws Exception {
-        Map rsMap = new HashMap();
+    public static Map<Object,Object> initCommonDTO(Object commonDTO) throws Exception {
+        Map<Object,Object> rsMap = new HashMap<Object,Object>();
         Class dtoClass = commonDTO.getClass();
         Field[] fields = dtoClass.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            Field filed = fields[i];
+        for (Field filed : fields) {
             String filedName = filed.getName();
             Object value = getMethodValue(commonDTO, upperFirst(filedName));
             rsMap.put(filedName.toUpperCase(), value);
@@ -74,11 +72,9 @@ public class ClassInvokeUtil {
 
     public static void objectToMap(Map source, Object target) throws Exception {
         Set keyset = source.keySet();
-        Iterator iterator = keyset.iterator();
 
-        while (iterator.hasNext()) {
-            Object key = iterator.next();
-            setMethodValue(target,String.valueOf(key),source.get(key));
+        for (Object key : keyset) {
+            setMethodValue(target, String.valueOf(key), source.get(key));
         }
     }
 

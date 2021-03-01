@@ -117,17 +117,17 @@ public final class HTMLFilter {
         } else if (!conf.containsKey("vAllowedEntities")) {
             throw new IllegalArgumentException("configuration requires vAllowedEntities");
         } else {
-            this.vAllowed = Collections.unmodifiableMap((HashMap)conf.get("vAllowed"));
-            this.vSelfClosingTags = (String[])((String[])conf.get("vSelfClosingTags"));
-            this.vNeedClosingTags = (String[])((String[])conf.get("vNeedClosingTags"));
-            this.vDisallowed = (String[])((String[])conf.get("vDisallowed"));
-            this.vAllowedProtocols = (String[])((String[])conf.get("vAllowedProtocols"));
-            this.vProtocolAtts = (String[])((String[])conf.get("vProtocolAtts"));
-            this.vRemoveBlanks = (String[])((String[])conf.get("vRemoveBlanks"));
-            this.vAllowedEntities = (String[])((String[])conf.get("vAllowedEntities"));
-            this.stripComment = conf.containsKey("stripComment") ? (Boolean)conf.get("stripComment") : true;
-            this.encodeQuotes = conf.containsKey("encodeQuotes") ? (Boolean)conf.get("encodeQuotes") : true;
-            this.alwaysMakeTags = conf.containsKey("alwaysMakeTags") ? (Boolean)conf.get("alwaysMakeTags") : true;
+            this.vAllowed = Collections.unmodifiableMap((HashMap) conf.get("vAllowed"));
+            this.vSelfClosingTags = (String[]) ((String[]) conf.get("vSelfClosingTags"));
+            this.vNeedClosingTags = (String[]) ((String[]) conf.get("vNeedClosingTags"));
+            this.vDisallowed = (String[]) ((String[]) conf.get("vDisallowed"));
+            this.vAllowedProtocols = (String[]) ((String[]) conf.get("vAllowedProtocols"));
+            this.vProtocolAtts = (String[]) ((String[]) conf.get("vProtocolAtts"));
+            this.vRemoveBlanks = (String[]) ((String[]) conf.get("vRemoveBlanks"));
+            this.vAllowedEntities = (String[]) ((String[]) conf.get("vAllowedEntities"));
+            this.stripComment = conf.containsKey("stripComment") ? (Boolean) conf.get("stripComment") : true;
+            this.encodeQuotes = conf.containsKey("encodeQuotes") ? (Boolean) conf.get("encodeQuotes") : true;
+            this.alwaysMakeTags = conf.containsKey("alwaysMakeTags") ? (Boolean) conf.get("alwaysMakeTags") : true;
         }
     }
 
@@ -143,7 +143,7 @@ public final class HTMLFilter {
     }
 
     public static String chr(int decimal) {
-        return String.valueOf((char)decimal);
+        return String.valueOf((char) decimal);
     }
 
     public static String htmlSpecialChars(String s) {
@@ -227,7 +227,7 @@ public final class HTMLFilter {
         Matcher m = P_TAGS.matcher(s);
         StringBuffer buf = new StringBuffer();
 
-        while(m.find()) {
+        while (m.find()) {
             String replaceStr = m.group(1);
             replaceStr = this.processTag(replaceStr);
             m.appendReplacement(buf, Matcher.quoteReplacement(replaceStr));
@@ -237,10 +237,10 @@ public final class HTMLFilter {
         s = buf.toString();
         Iterator var7 = this.vTagCounts.keySet().iterator();
 
-        while(var7.hasNext()) {
-            String key = (String)var7.next();
+        while (var7.hasNext()) {
+            String key = (String) var7.next();
 
-            for(int ii = 0; ii < (Integer)this.vTagCounts.get(key); ++ii) {
+            for (int ii = 0; ii < (Integer) this.vTagCounts.get(key); ++ii) {
                 s = s + "</" + key + ">";
             }
         }
@@ -253,18 +253,18 @@ public final class HTMLFilter {
         String[] var3 = this.vRemoveBlanks;
         int var4 = var3.length;
 
-        for(int var5 = 0; var5 < var4; ++var5) {
+        for (int var5 = 0; var5 < var4; ++var5) {
             String tag = var3[var5];
             if (!P_REMOVE_PAIR_BLANKS.containsKey(tag)) {
                 P_REMOVE_PAIR_BLANKS.putIfAbsent(tag, Pattern.compile("<" + tag + "(\\s[^>]*)?></" + tag + ">"));
             }
 
-            result = regexReplace((Pattern)P_REMOVE_PAIR_BLANKS.get(tag), "", result);
+            result = regexReplace((Pattern) P_REMOVE_PAIR_BLANKS.get(tag), "", result);
             if (!P_REMOVE_SELF_BLANKS.containsKey(tag)) {
                 P_REMOVE_SELF_BLANKS.putIfAbsent(tag, Pattern.compile("<" + tag + "(\\s[^>]*)?/>"));
             }
 
-            result = regexReplace((Pattern)P_REMOVE_SELF_BLANKS.get(tag), "", result);
+            result = regexReplace((Pattern) P_REMOVE_SELF_BLANKS.get(tag), "", result);
         }
 
         return result;
@@ -281,7 +281,7 @@ public final class HTMLFilter {
         if (m.find()) {
             name = m.group(1).toLowerCase();
             if (this.allowed(name) && !inArray(name, this.vSelfClosingTags) && this.vTagCounts.containsKey(name)) {
-                this.vTagCounts.put(name, (Integer)this.vTagCounts.get(name) - 1);
+                this.vTagCounts.put(name, (Integer) this.vTagCounts.get(name) - 1);
                 return "</" + name + ">";
             }
         }
@@ -303,19 +303,19 @@ public final class HTMLFilter {
                 List<String> paramNames = new ArrayList();
                 ArrayList paramValues = new ArrayList();
 
-                while(m2.find()) {
+                while (m2.find()) {
                     paramNames.add(m2.group(1));
                     paramValues.add(m2.group(3));
                 }
 
-                while(m3.find()) {
+                while (m3.find()) {
                     paramNames.add(m3.group(1));
                     paramValues.add(m3.group(3));
                 }
 
-                for(int ii = 0; ii < paramNames.size(); ++ii) {
-                    String paramName = ((String)paramNames.get(ii)).toLowerCase();
-                    String paramValue = (String)paramValues.get(ii);
+                for (int ii = 0; ii < paramNames.size(); ++ii) {
+                    String paramName = ((String) paramNames.get(ii)).toLowerCase();
+                    String paramValue = (String) paramValues.get(ii);
                     if (this.allowedAttribute(name, paramName)) {
                         if (inArray(paramName, this.vProtocolAtts)) {
                             paramValue = this.processParamProtocol(paramValue);
@@ -336,7 +336,7 @@ public final class HTMLFilter {
                 if (ending != null && ending.length() >= 1) {
                     ending = " /";
                 } else if (this.vTagCounts.containsKey(name)) {
-                    this.vTagCounts.put(name, (Integer)this.vTagCounts.get(name) + 1);
+                    this.vTagCounts.put(name, (Integer) this.vTagCounts.get(name) + 1);
                 } else {
                     this.vTagCounts.put(name, 1);
                 }
@@ -368,7 +368,7 @@ public final class HTMLFilter {
 
         String match;
         int decimal;
-        while(m.find()) {
+        while (m.find()) {
             match = m.group(1);
             decimal = Integer.decode(match);
             m.appendReplacement(buf, Matcher.quoteReplacement(chr(decimal)));
@@ -379,7 +379,7 @@ public final class HTMLFilter {
         buf = new StringBuffer();
         m = P_ENTITY_UNICODE.matcher(s);
 
-        while(m.find()) {
+        while (m.find()) {
             match = m.group(1);
             decimal = Integer.valueOf(match, 16);
             m.appendReplacement(buf, Matcher.quoteReplacement(chr(decimal)));
@@ -390,7 +390,7 @@ public final class HTMLFilter {
         buf = new StringBuffer();
         m = P_ENCODE.matcher(s);
 
-        while(m.find()) {
+        while (m.find()) {
             match = m.group(1);
             decimal = Integer.valueOf(match, 16);
             m.appendReplacement(buf, Matcher.quoteReplacement(chr(decimal)));
@@ -406,7 +406,7 @@ public final class HTMLFilter {
         StringBuffer buf = new StringBuffer();
         Matcher m = P_VALID_ENTITIES.matcher(s);
 
-        while(m.find()) {
+        while (m.find()) {
             String one = m.group(1);
             String two = m.group(2);
             m.appendReplacement(buf, Matcher.quoteReplacement(this.checkEntity(one, two)));
@@ -423,7 +423,7 @@ public final class HTMLFilter {
             StringBuffer buf = new StringBuffer();
             Matcher m = P_VALID_QUOTES.matcher(s);
 
-            while(m.find()) {
+            while (m.find()) {
                 String one = m.group(1);
                 String two = m.group(2);
                 String three = m.group(3);
@@ -447,7 +447,7 @@ public final class HTMLFilter {
         String[] var2 = array;
         int var3 = array.length;
 
-        for(int var4 = 0; var4 < var3; ++var4) {
+        for (int var4 = 0; var4 < var3; ++var4) {
             String item = var2[var4];
             if (item != null && item.equals(s)) {
                 return true;
@@ -462,6 +462,6 @@ public final class HTMLFilter {
     }
 
     private boolean allowedAttribute(String name, String paramName) {
-        return this.allowed(name) && (this.vAllowed.isEmpty() || ((List)this.vAllowed.get(name)).contains(paramName));
+        return this.allowed(name) && (this.vAllowed.isEmpty() || ((List) this.vAllowed.get(name)).contains(paramName));
     }
 }

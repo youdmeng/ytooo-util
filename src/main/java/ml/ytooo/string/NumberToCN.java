@@ -7,13 +7,14 @@ package ml.ytooo.string;
 import java.math.BigDecimal;
 
 /**
- 6  * 数字转换为汉语中人民币的大写<br>
- 7  *
- 8  * @author hongten
- 9  * @contact hongtenzone@foxmail.com
- 10  * @create 2013-08-13
- 11  */
- public class NumberToCN {
+ * 6  * 数字转换为汉语中人民币的大写<br>
+ * 7  *
+ * 8  * @author hongten
+ * 9  * @contact hongtenzone@foxmail.com
+ * 10  * @create 2013-08-13
+ * 11
+ */
+public class NumberToCN {
     /**
      * 汉语中数字大写
      */
@@ -48,7 +49,7 @@ import java.math.BigDecimal;
      * @param numberOfMoney 输入的金额
      * @return 对应的汉语大写
      */
-    public static String number2CNMontrayUnit(BigDecimal numberOfMoney) {
+    public static String number2CNmoney(BigDecimal numberOfMoney) {
         StringBuffer sb = new StringBuffer();
         // -1, 0, or 1 as the value of this BigDecimal is negative, zero, or
         // positive.
@@ -77,10 +78,7 @@ import java.math.BigDecimal;
             getZero = true;
         }
         int zeroSize = 0;
-        while (true) {
-            if (number <= 0) {
-                break;
-            }
+        while (number > 0) {
             // 每次获取到最后一个数
             numUnit = (int) (number % 10);
             if (numUnit > 0) {
@@ -100,9 +98,7 @@ import java.math.BigDecimal;
                     sb.insert(0, CN_UPPER_NUMBER[numUnit]);
                 }
                 if (numIndex == 2) {
-                    if (number > 0) {
-                        sb.insert(0, CN_UPPER_MONETRAY_UNIT[numIndex]);
-                    }
+                    sb.insert(0, CN_UPPER_MONETRAY_UNIT[numIndex]);
                 } else if (((numIndex - 2) % 4 == 0) && (number % 1000 > 0)) {
                     sb.insert(0, CN_UPPER_MONETRAY_UNIT[numIndex]);
                 }

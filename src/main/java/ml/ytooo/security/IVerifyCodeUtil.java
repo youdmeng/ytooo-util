@@ -29,7 +29,7 @@ public class IVerifyCodeUtil {
     /**
      * fontTypes
      */
-    private static final String[] fontTypes = { "\u5b8b\u4f53", "\u65b0\u5b8b\u4f53", "\u9ed1\u4f53", "\u6977\u4f53", "\u96b6\u4e66" };
+    private static final String[] FONT_TYPES = {"\u5b8b\u4f53", "\u65b0\u5b8b\u4f53", "\u9ed1\u4f53", "\u6977\u4f53", "\u96b6\u4e66"};
 
     /**
      * VALICATE_CODE_LENGTH
@@ -38,15 +38,6 @@ public class IVerifyCodeUtil {
 
     private static final String RANDOM_STRING_BASE = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789"; //不包括 0 o O 1 i I l
 
-    /**
-     * generate
-     *
-     * @param width
-     * @param height
-     * @param os
-     * @return
-     * @throws IOException
-     */
     private static String generate(int width, int height, OutputStream os) throws IOException {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = image.getGraphics();
@@ -115,13 +106,14 @@ public class IVerifyCodeUtil {
         char[] charArray = randomStr.toCharArray();
         for (int i = 0; i < charArray.length; i++) {
             g.setColor(randomColor(50, 100));
-            g.setFont(new Font(fontTypes[RandomUtils.nextInt(0,fontTypes.length)], Font.BOLD, 26));
-            g.drawString(String.valueOf(charArray[i]), 15 * i + 5, 19 + RandomUtils.nextInt(0,8));
+            g.setFont(new Font(FONT_TYPES[RandomUtils.nextInt(0, FONT_TYPES.length)], Font.BOLD, 26));
+            g.drawString(String.valueOf(charArray[i]), 15 * i + 5, 19 + RandomUtils.nextInt(0, 8));
         }
     }
 
     /**
      * 随机颜色
+     *
      * @param fc
      * @param bc
      * @return

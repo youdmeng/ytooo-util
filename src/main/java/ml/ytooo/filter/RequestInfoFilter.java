@@ -14,6 +14,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,8 +40,8 @@ public class RequestInfoFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
-        HttpServletRequest request = (HttpServletRequest)req;
-        HttpServletResponse response = (HttpServletResponse)resp;
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) resp;
 
         try {
             long startTime = System.currentTimeMillis();
@@ -48,7 +49,6 @@ public class RequestInfoFilter implements Filter {
             if (!isIgnore(uri)) {
                 logger.info("==================== RequestInfoFilter Start ====================");
                 logger.info(request.getMethod() + " : " + uri);
-                logger.info("session存活时间：" + request.getSession().getMaxInactiveInterval());
                 this.logHeaders(request);
                 this.logParams(request);
                 chain.doFilter(request, response);
@@ -68,8 +68,8 @@ public class RequestInfoFilter implements Filter {
         Map<String, String> headerMap = new HashMap();
         Enumeration headers = request.getHeaderNames();
 
-        while(headers.hasMoreElements()) {
-            String headName = (String)headers.nextElement();
+        while (headers.hasMoreElements()) {
+            String headName = (String) headers.nextElement();
             if (headName != null && !"".equals(headName)) {
                 headerMap.put(headName, request.getHeader(headName));
             }
@@ -83,8 +83,8 @@ public class RequestInfoFilter implements Filter {
         Map<String, String> maps = new HashMap();
         Enumeration keys = request.getParameterNames();
 
-        while(keys.hasMoreElements()) {
-            String key = (String)keys.nextElement();
+        while (keys.hasMoreElements()) {
+            String key = (String) keys.nextElement();
             if (StringUtils.isNotEmpty(key)) {
                 String values = request.getParameter(key);
                 maps.put(key, values);
