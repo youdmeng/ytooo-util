@@ -1,69 +1,30 @@
 package ml.ytooo.string;
 
-import org.apache.commons.lang3.StringUtils;
-import org.jdom2.Document;
-import org.jdom2.JDOMException;
-import com.alibaba.fastjson.JSONObject;
-import org.jdom2.Element;
-import org.jdom2.input.SAXBuilder;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
-import java.util.List;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class XmlUtils {
-    public static JSONObject xml2Json(String xmlStr) throws JDOMException, IOException {
-        if (StringUtils.isEmpty(xmlStr)) {
-            return null;
-        }
-        xmlStr = xmlStr.replaceAll("\n", "");
-        byte[] xml = xmlStr.getBytes(StandardCharsets.UTF_8);
-        JSONObject json = new JSONObject();
-        InputStream is = new ByteArrayInputStream(xml);
-        SAXBuilder sb = new SAXBuilder();
-        Document doc = sb.build(is);
-        Element root = doc.getRootElement();
-        json.put(root.getName(), iterateElement(root));
-
-        return json;
+    /**
+     * 将xml实例化为对象
+     * @param xml String型的xml
+     * @param types Class数组
+     * @return 对象
+     */
+    public static Object fromXml(String xml, Class[] types){
+        XStream xstream = new XStream(new DomDriver());
+        xstream.processAnnotations(types);
+        return xstream.fromXML(xml);
     }
 
-    private static JSONObject iterateElement(Element element) {
-        List<Element> node = element.getChildren();
-        JSONObject obj = new JSONObject();
-        List list = null;
-        for (Element child : node) {
-            list = new LinkedList();
-            String text = child.getTextTrim();
-            if (StringUtils.isBlank(text)) {
-                if (child.getChildren().size() == 0) {
-                    continue;
-                }
-                if (obj.containsKey(child.getName())) {
-                    list = (List) obj.get(child.getName());
-                }
-                list.add(iterateElement(child)); //遍历child的子节点
-                obj.put(child.getName(), list);
-            } else {
-                if (obj.containsKey(child.getName())) {
-                    Object value = obj.get(child.getName());
-                    try {
-                        list = (List) value;
-                    } catch (ClassCastException e) {
-                        list.add(value);
-                    }
-                }
-                if (child.getChildren().size() == 0) { //child无子节点时直接设置text
-                    obj.put(child.getName(), text);
-                } else {
-                    list.add(text);
-                    obj.put(child.getName(), list);
-                }
-            }
-        }
-        return obj;
+    /**
+     * 将对象序列化为xml
+     * @param obj 实体对象
+     * @param types Class数组
+     * @return String型的xml
+     */
+    public static String toXml(Object obj, Class[] types){
+        XStream xstream = new XStream(new DomDriver());
+        xstream.processAnnotations(types);
+        return xstream.toXML(obj);
     }
 }

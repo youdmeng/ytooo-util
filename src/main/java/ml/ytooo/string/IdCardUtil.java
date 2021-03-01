@@ -1,6 +1,6 @@
 package ml.ytooo.string;
 
-import org.apache.commons.lang3.StringUtils;
+import ml.ytooo.time.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,10 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.regex.Pattern;
 
 /**
- * Created by ChengZhenxing on 2017/3/1.
+ *
+ * @author ChengZhenxing
+ * @date 2017/3/1
  */
 public class IdCardUtil {
 
@@ -36,16 +37,16 @@ public class IdCardUtil {
             {"65", "新疆"}, {"71", "台湾"}, {"81", "香港"}, {"82", "澳门"},
             {"91", "国外"}};
 
-    private static final String[] cityCode = {"11", "12", "13", "14", "15", "21", "22",
+    private static final String[] STRINGS = {"11", "12", "13", "14", "15", "21", "22",
             "23", "31", "32", "33", "34", "35", "36", "37", "41", "42", "43",
             "44", "45", "46", "50", "51", "52", "53", "54", "61", "62", "63",
             "64", "65", "71", "81", "82", "91"};
 
     // 每位加权因子
-    private static final int[] power = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
+    private static final int[] POWER = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
 
     // 第18位校检码
-    private static final String[] verifyCode = {"1", "0", "X", "9", "8", "7", "6", "5",
+    private static final String[] VERIFY_CODE = {"1", "0", "X", "9", "8", "7", "6", "5",
             "4", "3", "2"};
 
 
@@ -95,7 +96,7 @@ public class IdCardUtil {
         char[] c = null;
         String checkCode = "";
         // 是否都为数字
-        if (isDigital(idcard17)) {
+        if (ValidateUtils.Integer(idcard17)) {
             c = idcard17.toCharArray();
         } else {
             return false;
@@ -134,7 +135,7 @@ public class IdCardUtil {
         }
 
         // 是否全都为数字
-        if (isDigital(idcard)) {
+        if (ValidateUtils.Integer(idcard)) {
             String provinceid = idcard.substring(0, 2);
             String birthday = idcard.substring(6, 12);
             int year = Integer.parseInt(idcard.substring(6, 8));
@@ -143,7 +144,7 @@ public class IdCardUtil {
 
             // 判断是否为合法的省份
             boolean flag = false;
-            for (String id : cityCode) {
+            for (String id : STRINGS) {
                 if (id.equals(provinceid)) {
                     flag = true;
                     break;
@@ -168,17 +169,14 @@ public class IdCardUtil {
             int curYear = curDay.get(Calendar.YEAR);
             int year2bit = Integer.parseInt(String.valueOf(curYear)
                     .substring(2));
-
             // 判断该年份的两位表示法，小于50的和大于当前年份的，为假
             if ((year < 50 && year > year2bit)) {
                 return false;
             }
-
             // 判断是否为合法的月份
             if (month < 1 || month > 12) {
                 return false;
             }
-
             // 判断是否为合法的日期
             boolean mflag = false;
             curDay.setTime(birthdate); // 将该身份证的出生日期赋于对象curDay
@@ -213,51 +211,6 @@ public class IdCardUtil {
         }
     }
 
-    /**
-     * 15位和18位身份证号码的基本数字和位数验校
-     *
-     * @param idcard
-     * @return
-     */
-    public boolean isIdcard(String idcard) {
-        return idcard != null && !"".equals(idcard) && Pattern.matches(
-                "(^\\d{15}$)|(\\d{17}(?:\\d|x|X)$)", idcard);
-    }
-
-    /**
-     * 15位身份证号码的基本数字和位数验校
-     *
-     * @param idcard
-     * @return
-     */
-    public boolean is15Idcard(String idcard) {
-        return idcard != null && !"".equals(idcard) && Pattern.matches(
-                "^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$",
-                idcard);
-    }
-
-    /**
-     * 18位身份证号码的基本数字和位数验校
-     *
-     * @param idcard
-     * @return
-     */
-    public boolean is18Idcard(String idcard) {
-        return Pattern
-                .matches(
-                        "^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([\\d|x|X]{1})$",
-                        idcard);
-    }
-
-    /**
-     * 数字验证
-     *
-     * @param str
-     * @return
-     */
-    public static boolean isDigital(String str) {
-        return str != null && !"".equals(str) && str.matches("^[0-9]*$");
-    }
 
     /**
      * 将身份证的每位和对应位的加权因子相乘之后，再得到和值
@@ -265,18 +218,18 @@ public class IdCardUtil {
      * @param bit
      * @return
      */
-    public static int getPowerSum(int[] bit) {
+    private static int getPowerSum(int[] bit) {
 
         int sum = 0;
 
-        if (power.length != bit.length) {
+        if (POWER.length != bit.length) {
             return sum;
         }
 
         for (int i = 0; i < bit.length; i++) {
-            for (int j = 0; j < power.length; j++) {
+            for (int j = 0; j < POWER.length; j++) {
                 if (i == j) {
-                    sum = sum + bit[i] * power[j];
+                    sum = sum + bit[i] * POWER[j];
                 }
             }
         }
@@ -289,7 +242,7 @@ public class IdCardUtil {
      * @param sum17
      * @return 校验位
      */
-    public static String getCheckCodeBySum(int sum17) {
+    private static String getCheckCodeBySum(int sum17) {
         String checkCode = null;
         switch (sum17 % 11) {
             case 10:
@@ -338,7 +291,7 @@ public class IdCardUtil {
      * @return
      * @throws NumberFormatException
      */
-    public static int[] converCharToInt(char[] c) throws NumberFormatException {
+    private static int[] converCharToInt(char[] c) throws NumberFormatException {
         int[] a = new int[c.length];
         int k = 0;
         for (char temp : c) {
@@ -348,15 +301,44 @@ public class IdCardUtil {
     }
 
     /**
-     * 身份证号****
+     * 根据身份证查询生日
      *
      * @param idNo
      * @return
      */
-    public static String getIdNoStar(String idNo) {
-        if (StringUtils.isBlank(idNo) || idNo.length() < 14) {
-            return "";
+    public static Date getBirthdayFromIdNo(String idNo) {
+        if (idNo.length() == 15) {
+            String birthdayStr = idNo.substring(6, 12);
+            String yearStr = "20" + idNo.substring(6, 8);
+            if (Integer.parseInt(yearStr) > (new Date().getYear())) {
+                birthdayStr = "19" + birthdayStr;
+            } else {
+                birthdayStr = "20" + birthdayStr;
+            }
+            return DateUtil.parseDate(birthdayStr, "yyyyMMdd");
+        } else {
+            String birthdayStr = idNo.substring(6, 14);
+            return DateUtil.parseDate(birthdayStr, "yyyyMMdd");
         }
-        return idNo.substring(0, 6) + "*****" + idNo.substring(14);
+    }
+
+    /**
+     * 根据身份证查询性别
+     *
+     * @param idNo
+     * @return
+     */
+    public static int getSexFromIdNo(String idNo) {
+        String sexStr = "";
+        if (idNo.length() == 15) {
+            sexStr = idNo.substring(14, 15);
+        } else {
+            sexStr = idNo.substring(16, 17);
+        }
+        if (Integer.parseInt(sexStr) % 2 != 0) {
+            return 1;
+        } else {
+            return 2;
+        }
     }
 }
