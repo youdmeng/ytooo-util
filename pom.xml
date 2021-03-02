@@ -133,6 +133,18 @@
 		    <artifactId>unirest-java</artifactId>
 		    <version>1.4.9</version>
 	    </dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-core -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.7.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-web -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>1.7.1</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/ant/ant -->
 		<dependency>
 			<groupId>ant</groupId>

@@ -21,19 +21,19 @@ import java.util.regex.Pattern;
 
 public final class HTMLFilter {
     private static final int REGEX_FLAGS_SI = 34;
-    private static final Pattern P_COMMENTS = Pattern.compile("<!--(.*?)-->", 32);
-    private static final Pattern P_COMMENT = Pattern.compile("^!--(.*)--$", 34);
-    private static final Pattern P_TAGS = Pattern.compile("<(.*?)>", 32);
-    private static final Pattern P_END_TAG = Pattern.compile("^/([a-z0-9]+)", 34);
-    private static final Pattern P_START_TAG = Pattern.compile("^([a-z0-9]+)(.*?)(/?)$", 34);
-    private static final Pattern P_QUOTED_ATTRIBUTES = Pattern.compile("([a-z0-9]+)=([\"'])(.*?)\\2", 34);
-    private static final Pattern P_UNQUOTED_ATTRIBUTES = Pattern.compile("([a-z0-9]+)(=)([^\"\\s']+)", 34);
-    private static final Pattern P_PROTOCOL = Pattern.compile("^([^:]+):", 34);
+    private static final Pattern P_COMMENTS = Pattern.compile("<!--(.*?)-->", Pattern.DOTALL);
+    private static final Pattern P_COMMENT = Pattern.compile("^!--(.*)--$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+    private static final Pattern P_TAGS = Pattern.compile("<(.*?)>", Pattern.DOTALL);
+    private static final Pattern P_END_TAG = Pattern.compile("^/([a-z0-9]+)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+    private static final Pattern P_START_TAG = Pattern.compile("^([a-z0-9]+)(.*?)(/?)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+    private static final Pattern P_QUOTED_ATTRIBUTES = Pattern.compile("([a-z0-9]+)=([\"'])(.*?)\\2", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+    private static final Pattern P_UNQUOTED_ATTRIBUTES = Pattern.compile("([a-z0-9]+)(=)([^\"\\s']+)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+    private static final Pattern P_PROTOCOL = Pattern.compile("^([^:]+):", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
     private static final Pattern P_ENTITY = Pattern.compile("&#(\\d+);?");
     private static final Pattern P_ENTITY_UNICODE = Pattern.compile("&#x([0-9a-f]+);?");
     private static final Pattern P_ENCODE = Pattern.compile("%([0-9a-f]{2});?");
     private static final Pattern P_VALID_ENTITIES = Pattern.compile("&([^&;]*)(?=(;|&|$))");
-    private static final Pattern P_VALID_QUOTES = Pattern.compile("(>|^)([^<]+?)(<|$)", 32);
+    private static final Pattern P_VALID_QUOTES = Pattern.compile("(>|^)([^<]+?)(<|$)", Pattern.DOTALL);
     private static final Pattern P_END_ARROW = Pattern.compile("^>");
     private static final Pattern P_BODY_TO_END = Pattern.compile("<([^>]*?)(?=<|$)");
     private static final Pattern P_XML_CONTENT = Pattern.compile("(^|>)([^<]*?)(?=>)");
@@ -74,7 +74,7 @@ public final class HTMLFilter {
         imgAtts.add("height");
         imgAtts.add("alt");
         this.vAllowed.put("img", imgAtts);
-        String STRONG = "strong";
+        String sTRONG = "strong";
         ArrayList<String> noAtts = new ArrayList();
         this.vAllowed.put("b", noAtts);
         this.vAllowed.put("strong", noAtts);
