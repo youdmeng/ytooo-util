@@ -15,7 +15,6 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-	    <utils.release.version>3.10</utils.release.version>
 	    <lombok>1.18.12</lombok>
 	    <commons-lang3>3.10</commons-lang3>
 	    <fastjson>1.2.68</fastjson>
@@ -223,8 +222,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>8</source>
-					<target>8</target>
+					<source>11</source>
+					<target>11</target>
 					<compilerVersion>${java.version}</compilerVersion>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
