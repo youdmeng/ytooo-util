@@ -16,9 +16,15 @@ import org.dozer.loader.api.BeanMappingBuilder;
 import org.dozer.loader.api.TypeMappingOptions;
 
 public class BeanMapper {
+
     private static BeanMapper instance;
 
+    private DozerBeanMapper dozer;
+    private DozerBeanMapper dozerIgonrenull;
+
     private BeanMapper() {
+        dozer = new DozerBeanMapper();
+        dozerIgonrenull = new DozerBeanMapper();
     }
 
     public static BeanMapper getInstance() {
@@ -32,8 +38,6 @@ public class BeanMapper {
         return instance;
     }
 
-    private static DozerBeanMapper dozer = new DozerBeanMapper();
-
     public <T> T map(Object source, Class<T> destinationClass) {
         return source == null ? null : dozer.map(source, destinationClass);
     }
@@ -43,12 +47,7 @@ public class BeanMapper {
         if (sourceList == null) {
             return destinationList;
         } else {
-            Iterator iterator = sourceList.iterator();
-            while (iterator.hasNext()) {
-                Object sourceObject = iterator.next();
-                Object destinationObject = dozer.map(sourceObject, destinationClass);
-                destinationList.add(destinationObject);
-            }
+            sourceList.forEach(source -> destinationList.add(dozer.map(source, destinationClass)));
             return destinationList;
         }
     }
@@ -66,8 +65,10 @@ public class BeanMapper {
                         destinationObject.getClass(), TypeMappingOptions.mapNull(false));
             }
         };
-        dozer.addMapping(beanMappingBuilder);
-        dozer.map(source, destinationObject);
-        dozer = new DozerBeanMapper();
+        synchronized (dozerIgonrenull){
+            dozerIgonrenull.addMapping(beanMappingBuilder);
+            dozerIgonrenull.map(source, destinationObject);
+            dozerIgonrenull = new DozerBeanMapper();
+        }
     }
 }
