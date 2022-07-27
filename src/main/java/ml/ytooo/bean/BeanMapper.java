@@ -4,27 +4,23 @@
 //
 
 package ml.ytooo.bean;
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
+import com.github.dozermapper.core.loader.api.BeanMappingBuilder;
+import com.github.dozermapper.core.loader.api.TypeMappingOptions;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
-import org.dozer.loader.api.BeanMappingBuilder;
-import org.dozer.loader.api.TypeMappingOptions;
 
 public class BeanMapper {
 
-    private static BeanMapper instance;
+    private static volatile BeanMapper instance;
 
-    private DozerBeanMapper dozer;
-    private DozerBeanMapper dozerIgonrenull;
+    private Mapper dozer;
 
     private BeanMapper() {
-        dozer = new DozerBeanMapper();
-        dozerIgonrenull = new DozerBeanMapper();
+        dozer = DozerBeanMapperBuilder.buildDefault();
     }
 
     public static BeanMapper getInstance() {
@@ -43,13 +39,11 @@ public class BeanMapper {
     }
 
     public <T> List<T> mapList(Collection sourceList, Class<T> destinationClass) {
-        List destinationList = new ArrayList();
-        if (sourceList == null) {
-            return destinationList;
-        } else {
+        List<T> destinationList = new ArrayList<T>();
+        if (sourceList != null) {
             sourceList.forEach(source -> destinationList.add(dozer.map(source, destinationClass)));
-            return destinationList;
         }
+        return destinationList;
     }
 
     public void copy(Object source, Object destinationObject) {
@@ -65,10 +59,8 @@ public class BeanMapper {
                         destinationObject.getClass(), TypeMappingOptions.mapNull(false));
             }
         };
-        synchronized (dozerIgonrenull){
-            dozerIgonrenull.addMapping(beanMappingBuilder);
-            dozerIgonrenull.map(source, destinationObject);
-            dozerIgonrenull = new DozerBeanMapper();
-        }
+        final Mapper dozerIgonrenull = DozerBeanMapperBuilder.create().withMappingBuilder(beanMappingBuilder).build();
+        dozerIgonrenull.map(source, destinationObject);
+
     }
 }

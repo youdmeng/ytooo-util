@@ -6,7 +6,7 @@
 
     <groupId>ml.ytooo</groupId>
     <artifactId>ytooo-util</artifactId>
-    <version>5.1.0</version>
+    <version>5.1.1</version>
 	<packaging>jar</packaging>
 	
     <properties>
@@ -162,12 +162,11 @@
 		    <artifactId>guava</artifactId>
 		    <version>29.0-jre</version>
 	    </dependency>
-	    <!-- https://mvnrepository.com/artifact/net.sf.dozer/dozer -->
-	    <dependency>
-		    <groupId>net.sf.dozer</groupId>
-		    <artifactId>dozer</artifactId>
-		    <version>5.5.1</version>
-	    </dependency>
+		<dependency>
+			<groupId>com.github.dozermapper</groupId>
+			<artifactId>dozer-core</artifactId>
+			<version>6.5.2</version>
+		</dependency>
 	    <!-- https://mvnrepository.com/artifact/org.jdom/jdom2 -->
 	    <dependency>
 		    <groupId>org.jdom</groupId>
@@ -181,7 +180,25 @@
 		    <artifactId>opencc4j</artifactId>
 		    <version>1.5.1</version>
 	    </dependency>
-    </dependencies>
+		<!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.31</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>2.6.6</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+			<version>2.6.6</version>
+		</dependency>
+	</dependencies>
 	
 	<build>
 		<plugins>
@@ -222,8 +239,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>11</source>
-					<target>11</target>
+					<source>8</source>
+					<target>8</target>
 					<compilerVersion>${java.version}</compilerVersion>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>

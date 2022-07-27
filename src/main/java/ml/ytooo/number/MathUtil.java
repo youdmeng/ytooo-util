@@ -49,6 +49,17 @@ public class MathUtil {
      */
     private static final StringBuffer CHINESE_NUMBER = new StringBuffer("零壹贰叁肆伍陆柒捌玖");
 
+
+    /**
+     * 生产指定区间的随机数
+     * @param min
+     * @param max
+     * @return
+     */
+    public static double random(double min, double max) {
+        return min + (max - min) * Math.random();
+    }
+
     /**
      * 做加法
      *
@@ -167,7 +178,7 @@ public class MathUtil {
     }
 
     /**
-     * 比较大小，a>b
+     * 比较大小，a > b
      *
      * @param a 参数a
      * @param b 参数b
